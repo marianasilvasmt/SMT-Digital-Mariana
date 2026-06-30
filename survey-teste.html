@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Survey de Exemplo — Área de Testes</title>
+    <title>Survey de Teste — Área de Testes</title>
 
-    <!-- Se sua survey usa um script de embed (Medallia, Qualtrics, etc), cole a tag aqui -->
-    <!-- <script type="text/javascript" src="SEU-SCRIPT-AQUI" async></script> -->
+    <!-- ════════════════════════════════════════════════════════════
+         1) COLE AQUI O SCRIPT DA MEDALLIA (troque a tag toda abaixo)
+    ════════════════════════════════════════════════════════════ -->
+    <script type="text/javascript" src="COLOQUE_AQUI_O_SRC_DO_SEU_SCRIPT_MEDALLIA" async></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -23,6 +25,12 @@
             --muted: #6d8aa6;
             --accent: #2f7de1;
             --accent-dark: #1f5fb8;
+            --green: #1f8a52;
+            --green-bg: #e4f5ec;
+            --amber: #a06a13;
+            --amber-bg: #fbeed8;
+            --red: #b8293f;
+            --red-bg: #fbe6ea;
             --mono: 'IBM Plex Mono', monospace;
             --sans: 'IBM Plex Sans', sans-serif;
         }
@@ -101,6 +109,13 @@
             padding: 56px 48px 80px;
         }
 
+        .page-header { margin-bottom: 32px; animation: fadeIn 0.4s ease both; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
         .eyebrow {
             font-family: var(--mono);
             font-size: 11px;
@@ -125,44 +140,162 @@
             color: var(--muted);
             line-height: 1.7;
             max-width: 520px;
-            margin-bottom: 40px;
         }
 
-        .test-card {
-            background: var(--surface);
-            border: 1px solid var(--border-dark);
+        /* Status bar (estado do SDK da Medallia) */
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
             border-radius: 8px;
-            padding: 24px;
+            font-family: var(--mono);
+            font-size: 12px;
+            margin: 28px 0;
+            border: 1px solid var(--border-dark);
+            background: var(--surface);
+            color: var(--muted);
         }
 
-        .test-card-label {
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--muted);
+            flex-shrink: 0;
+        }
+
+        .status-bar.loading .status-dot {
+            background: var(--amber);
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        .status-bar.ready {
+            border-color: var(--green-bg);
+            background: var(--green-bg);
+            color: var(--green);
+        }
+        .status-bar.ready .status-dot { background: var(--green); }
+
+        .status-bar.error {
+            border-color: var(--red-bg);
+            background: var(--red-bg);
+            color: var(--red);
+        }
+        .status-bar.error .status-dot { background: var(--red); }
+
+        .status-bar.info {
+            border-color: var(--border-dark);
+            background: #eef6ff;
+            color: var(--accent-dark);
+        }
+        .status-bar.info .status-dot { background: var(--accent); }
+
+        .section-label {
             font-family: var(--mono);
             font-size: 10.5px;
-            letter-spacing: 0.12em;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
             color: var(--muted);
             margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
         }
 
-        /* Coloque aqui o link/iframe/botão da sua survey */
-        .survey-trigger {
-            display: inline-flex;
+        .surveys-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 32px;
+        }
+
+        .survey-card {
+            display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 12px 20px;
-            background: var(--accent);
-            color: #fff;
-            font-family: var(--sans);
-            font-weight: 600;
-            font-size: 14px;
-            border: none;
+            gap: 16px;
+            background: var(--surface);
+            border: 1px solid var(--border-dark);
             border-radius: 8px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: background 0.15s;
+            padding: 16px 20px;
+            cursor: not-allowed;
+            opacity: 0.55;
+            transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s, opacity 0.15s;
+            animation: fadeIn 0.4s ease both;
         }
 
-        .survey-trigger:hover { background: var(--accent-dark); }
+        .survey-card.sdk-ready {
+            cursor: pointer;
+            opacity: 1;
+        }
+
+        .survey-card.sdk-ready:hover {
+            border-color: var(--accent);
+            box-shadow: 3px 3px 0 0 var(--accent);
+            transform: translate(-1px, -1px);
+        }
+
+        .survey-card.sdk-ready:active {
+            transform: translate(0, 0);
+            box-shadow: none;
+        }
+
+        .card-num {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--muted);
+            width: 24px;
+            flex-shrink: 0;
+        }
+
+        .card-body { flex: 1; }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+
+        .card-id {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .card-arrow svg {
+            width: 14px;
+            height: 14px;
+            stroke: var(--muted);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: stroke 0.15s, transform 0.15s;
+        }
+
+        .survey-card.sdk-ready:hover .card-arrow svg {
+            stroke: var(--accent-dark);
+            transform: translate(2px, -2px);
+        }
+
+        .instructions {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 20px 24px;
+            animation: fadeIn 0.4s 0.25s ease both;
+        }
+
+        .instructions-title {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 14px;
+        }
+
+        .instructions ol { padding-left: 18px; display: flex; flex-direction: column; gap: 8px; }
+        .instructions li { font-size: 13px; color: var(--muted); line-height: 1.6; }
     </style>
 </head>
 <body>
@@ -179,19 +312,89 @@
 </header>
 
 <main>
-    <p class="eyebrow">Ambiente de testes</p>
-    <h1>Survey de <strong>Exemplo</strong></h1>
-    <p class="page-desc">Substitua este conteúdo pelo link, botão ou iframe da survey que você quer testar.</p>
+    <div class="page-header">
+        <p class="eyebrow">Ambiente de testes</p>
+        <h1>Survey de <strong>Teste</strong></h1>
+        <p class="page-desc">Survey via Medallia. Espere o SDK carregar e clique no formulário que quiser abrir.</p>
+    </div>
 
-    <div class="test-card">
-        <p class="test-card-label">Disparar survey</p>
+    <div class="status-bar loading" id="statusBar">
+        <span class="status-dot"></span>
+        <span id="statusText">Carregando SDK da Medallia…</span>
+    </div>
 
-        <!-- Opção A: link direto para a survey -->
-        <a class="survey-trigger" href="#" target="_blank" rel="noopener">Abrir survey</a>
+    <p class="section-label">Formulários disponíveis</p>
 
-        <!-- Opção B: se sua plataforma usa um botão/script de embed, troque o bloco acima por ele -->
+    <!-- ════════════════════════════════════════════════════════════
+         2) COLOQUE O(S) FORM ID(S) DA SUA SURVEY NO data-form-id ABAIXO
+         (pode duplicar o bloco .survey-card se tiver mais de um form)
+    ════════════════════════════════════════════════════════════ -->
+    <div class="surveys-list">
+        <div class="survey-card" data-form-id="COLOQUE_AQUI_O_FORM_ID">
+            <span class="card-num">01</span>
+            <div class="card-body">
+                <div class="card-title">Nome da sua survey</div>
+                <div class="card-id">form #COLOQUE_AQUI_O_FORM_ID</div>
+            </div>
+            <div class="card-arrow">
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </div>
+        </div>
+    </div>
+
+    <div class="instructions">
+        <p class="instructions-title">Como usar</p>
+        <ol>
+            <li>Espere a barra de status acima mostrar "SDK pronto"</li>
+            <li>Clique no formulário que você quer abrir</li>
+            <li>O formulário da Medallia vai aparecer como um overlay na tela</li>
+        </ol>
     </div>
 </main>
+
+<script>
+    const cards = document.querySelectorAll('.survey-card');
+    const statusBar = document.getElementById('statusBar');
+    const statusText = document.getElementById('statusText');
+    let sdkReady = false;
+
+    function setStatus(type, text) {
+        statusBar.className = 'status-bar ' + type;
+        statusText.textContent = text;
+    }
+
+    function onSdkReady() {
+        sdkReady = true;
+        setStatus('ready', '✓ SDK pronto — selecione um formulário pra abrir');
+        cards.forEach(card => card.classList.add('sdk-ready'));
+    }
+
+    if (window.KAMPYLE_ONSITE_SDK) {
+        onSdkReady();
+    } else {
+        window.addEventListener('neb_OnsiteLoaded', onSdkReady);
+        setTimeout(() => {
+            if (!sdkReady) setStatus('error', '⚠ Tempo esgotado — tente recarregar a página');
+        }, 10000);
+    }
+
+    cards.forEach(card => {
+        card.addEventListener('click', function () {
+            if (!this.classList.contains('sdk-ready')) return;
+            const formId = parseInt(this.getAttribute('data-form-id'));
+            if (window.KAMPYLE_ONSITE_SDK?.showForm) {
+                try {
+                    window.KAMPYLE_ONSITE_SDK.showForm(formId);
+                    setStatus('info', `Abrindo formulário #${formId}`);
+                } catch (e) {
+                    setStatus('error', `Erro ao abrir o formulário #${formId}`);
+                }
+            } else {
+                setStatus('error', 'SDK não está pronto — recarregue a página');
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
