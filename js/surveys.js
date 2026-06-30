@@ -1,1 +1,0 @@
-const c=document.getElementById("cards");surveys.forEach(s=>c.innerHTML+=`<div class="survey"><h3>${s.title}</h3><p><b>Property:</b> ${s.property}</p><p><b>Roles:</b> ${s.roles}</p><a href="${s.url}">Start Survey</a></div>`);

@@ -1,1 +1,0 @@
-const surveys=[{title:"HM Candidate Survey",property:"HM",roles:"CC",url:"surveys/hm/index.html"},{title:"Chubb Claims",property:"Claims",roles:"Admin",url:"surveys/chubb/index.html"}];
