@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey de Exemplo — Área de Testes</title>
+
+    <!-- Se sua survey usa um script de embed (Medallia, Qualtrics, etc), cole a tag aqui -->
+    <!-- <script type="text/javascript" src="SEU-SCRIPT-AQUI" async></script> -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #eaf3fb;
+            --surface: #ffffff;
+            --border: #d4e6f7;
+            --border-dark: #aed0ee;
+            --text: #15324d;
+            --muted: #6d8aa6;
+            --accent: #2f7de1;
+            --accent-dark: #1f5fb8;
+            --mono: 'IBM Plex Mono', monospace;
+            --sans: 'IBM Plex Sans', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            min-height: 100vh;
+        }
+
+        header {
+            border-bottom: 1px solid var(--border-dark);
+            background: var(--surface);
+            padding: 0 48px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--mono);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            color: var(--text);
+        }
+
+        .logo-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: pulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--muted);
+            text-decoration: none;
+            letter-spacing: 0.06em;
+            transition: color 0.15s;
+        }
+
+        .back-link:hover { color: var(--accent-dark); }
+
+        .back-link svg {
+            width: 12px;
+            height: 12px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        main {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 56px 48px 80px;
+        }
+
+        .eyebrow {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.16em;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        h1 {
+            font-size: 30px;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+
+        h1 strong { font-weight: 600; color: var(--accent-dark); }
+
+        .page-desc {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.7;
+            max-width: 520px;
+            margin-bottom: 40px;
+        }
+
+        .test-card {
+            background: var(--surface);
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .test-card-label {
+            font-family: var(--mono);
+            font-size: 10.5px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 16px;
+        }
+
+        /* Coloque aqui o link/iframe/botão da sua survey */
+        .survey-trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: var(--accent);
+            color: #fff;
+            font-family: var(--sans);
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .survey-trigger:hover { background: var(--accent-dark); }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <span class="logo-dot"></span>
+        MINHAS SURVEYS
+    </div>
+    <a class="back-link" href="home.html">
+        <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        VOLTAR
+    </a>
+</header>
+
+<main>
+    <p class="eyebrow">Ambiente de testes</p>
+    <h1>Survey de <strong>Exemplo</strong></h1>
+    <p class="page-desc">Substitua este conteúdo pelo link, botão ou iframe da survey que você quer testar.</p>
+
+    <div class="test-card">
+        <p class="test-card-label">Disparar survey</p>
+
+        <!-- Opção A: link direto para a survey -->
+        <a class="survey-trigger" href="#" target="_blank" rel="noopener">Abrir survey</a>
+
+        <!-- Opção B: se sua plataforma usa um botão/script de embed, troque o bloco acima por ele -->
+    </div>
+</main>
+
+</body>
+</html>

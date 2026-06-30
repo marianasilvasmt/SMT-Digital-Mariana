@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área de Testes — Surveys</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #eaf3fb;
+            --surface: #ffffff;
+            --border: #d4e6f7;
+            --border-dark: #aed0ee;
+            --text: #15324d;
+            --muted: #6d8aa6;
+            --accent: #2f7de1;
+            --accent-dark: #1f5fb8;
+            --tag-bg: #e1eefb;
+            --mono: 'IBM Plex Mono', monospace;
+            --sans: 'IBM Plex Sans', sans-serif;
+            --green: #1f8a52;
+            --green-bg: #e4f5ec;
+            --live: #c2410c;
+            --live-bg: #fdece1;
+            --live-border: #f3c6a6;
+            --uat: #6d28d9;
+            --uat-bg: #efe7fc;
+            --uat-border: #d3bff5;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            min-height: 100vh;
+        }
+
+        header {
+            border-bottom: 1px solid var(--border-dark);
+            background: var(--surface);
+            padding: 0 48px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--mono);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .logo-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: pulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .header-meta {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--muted);
+            letter-spacing: 0.06em;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 64px 48px 80px;
+        }
+
+        .page-header {
+            margin-bottom: 56px;
+            animation: fadeIn 0.4s ease both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .eyebrow {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.16em;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            color: var(--text);
+            margin-bottom: 16px;
+        }
+
+        h1 strong {
+            font-weight: 600;
+            color: var(--accent-dark);
+        }
+
+        .page-desc {
+            font-size: 15px;
+            color: var(--muted);
+            line-height: 1.7;
+            max-width: 480px;
+        }
+
+        .section-label {
+            font-family: var(--mono);
+            font-size: 10.5px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+
+        .tool-card {
+            background: var(--surface);
+            border: 1px solid var(--border-dark);
+            border-radius: 6px;
+            padding: 28px 28px 24px;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s;
+            animation: fadeIn 0.4s ease both;
+        }
+
+        .tool-card:hover {
+            border-color: var(--accent);
+            box-shadow: 4px 4px 0 0 var(--accent);
+            transform: translate(-2px, -2px);
+        }
+
+        .tool-card:active {
+            transform: translate(0, 0);
+            box-shadow: none;
+        }
+
+        .tool-card.live-card:hover {
+            border-color: var(--live);
+            box-shadow: 4px 4px 0 0 var(--live);
+        }
+
+        .tool-card.uat-card:hover {
+            border-color: var(--uat);
+            box-shadow: 4px 4px 0 0 var(--uat);
+        }
+
+        .tool-card:nth-child(1) { animation-delay: 0.05s; }
+        .tool-card:nth-child(2) { animation-delay: 0.1s; }
+        .tool-card:nth-child(3) { animation-delay: 0.15s; }
+        .tool-card:nth-child(4) { animation-delay: 0.2s; }
+
+        .card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .card-icon {
+            width: 38px;
+            height: 38px;
+            border: 1px solid var(--border-dark);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+        }
+
+        .card-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--accent-dark);
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .live-card .card-icon {
+            background: var(--live-bg);
+            border-color: var(--live-border);
+        }
+
+        .live-card .card-icon svg {
+            stroke: var(--live);
+        }
+
+        .uat-card .card-icon {
+            background: var(--uat-bg);
+            border-color: var(--uat-border);
+        }
+
+        .uat-card .card-icon svg {
+            stroke: var(--uat);
+        }
+
+        .status-badge {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-active {
+            background: var(--green-bg);
+            color: var(--green);
+        }
+
+        .status-live {
+            background: var(--live-bg);
+            color: var(--live);
+            border: 1px solid var(--live-border);
+        }
+
+        .status-live::before {
+            content: '';
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--live);
+            animation: pulse 1.4s ease-in-out infinite;
+        }
+
+        .status-uat {
+            background: var(--uat-bg);
+            color: var(--uat);
+            border: 1px solid var(--uat-border);
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            line-height: 1.3;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.65;
+            flex: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 14px;
+            border-top: 1px solid var(--border);
+        }
+
+        .card-meta {
+            font-family: var(--mono);
+            font-size: 10.5px;
+            color: var(--muted);
+        }
+
+        .card-arrow {
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-arrow svg {
+            width: 14px;
+            height: 14px;
+            stroke: var(--muted);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: stroke 0.15s, transform 0.15s;
+        }
+
+        .tool-card:hover .card-arrow svg {
+            stroke: var(--accent-dark);
+            transform: translate(2px, -2px);
+        }
+
+        .live-card:hover .card-arrow svg { stroke: var(--live); }
+        .uat-card:hover .card-arrow svg { stroke: var(--uat); }
+
+        #timestamp {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 48px;
+            letter-spacing: 0.04em;
+        }
+    </style>
+</head>
+<body>
+
+<script>
+    // ── Verificação de login ───────────────────────────────────────────
+    if (sessionStorage.getItem('authenticated') !== 'true') {
+        window.location.replace('index.html');
+    }
+    // ────────────────────────────────────────────────────────────────────
+</script>
+
+<header>
+    <div class="logo">
+        <span class="logo-dot"></span>
+        MINHAS SURVEYS
+    </div>
+    <span class="header-meta">RESTRITO · AUTENTICADO</span>
+</header>
+
+<main>
+    <div class="page-header">
+        <p class="eyebrow">Dashboard</p>
+        <h1>Ambiente de <strong>Testes</strong></h1>
+        <p class="page-desc">Escolha abaixo a survey que você quer testar. Cada card abre o ambiente correspondente.</p>
+    </div>
+
+    <p class="section-label">Surveys disponíveis</p>
+
+    <div class="tools-grid">
+
+        <!-- EXEMPLO 1 — troque o href e os textos pela sua survey -->
+        <a href="survey-teste.html" class="tool-card">
+            <div class="card-top">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M9 11l3 3L22 4"/>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                    </svg>
+                </div>
+                <span class="status-badge status-active">ATIVO</span>
+            </div>
+            <div class="card-title">Survey de Exemplo</div>
+            <div class="card-desc">Descreva aqui do que se trata essa survey e em que ambiente ela roda (staging, formulário X, etc).</div>
+            <div class="card-footer">
+                <span class="card-meta">survey-teste.html</span>
+                <div class="card-arrow">
+                    <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </div>
+            </div>
+        </a>
+
+        <!-- EXEMPLO 2 — card no estilo "ao vivo" (produção) -->
+        <a href="#" class="tool-card live-card">
+            <div class="card-top">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="2" y1="12" x2="22" y2="12"/>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                </div>
+                <span class="status-badge status-live">LIVE</span>
+            </div>
+            <div class="card-title">Survey em Produção</div>
+            <div class="card-desc">Use esse estilo de card para surveys que estão em ambiente de produção. Cuidado ao testar.</div>
+            <div class="card-footer">
+                <span class="card-meta">link-da-survey.html</span>
+                <div class="card-arrow">
+                    <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </div>
+            </div>
+        </a>
+
+        <!-- EXEMPLO 3 — card no estilo "UAT" -->
+        <a href="#" class="tool-card uat-card">
+            <div class="card-top">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                    </svg>
+                </div>
+                <span class="status-badge status-uat">UAT</span>
+            </div>
+            <div class="card-title">Survey de UAT</div>
+            <div class="card-desc">Ambiente de homologação. Respostas não ficam visíveis para os usuários finais.</div>
+            <div class="card-footer">
+                <span class="card-meta">link-da-survey.html</span>
+                <div class="card-arrow">
+                    <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </div>
+            </div>
+        </a>
+
+    </div>
+
+    <p id="timestamp"></p>
+</main>
+
+<script>
+    const el = document.getElementById('timestamp');
+    const now = new Date();
+    el.textContent = `Sessão iniciada · ${now.toLocaleDateString('pt-BR', {day:'2-digit', month:'short', year:'numeric'})} ${now.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})}`;
+</script>
+
+</body>
+</html>
